@@ -1,23 +1,25 @@
-version: '2'
+version: '0.9'
+
 volumes:
-    config:
+  config:
+  adguardhome_work:
+  adguardhome_conf:
+    
 services:
+
+  # https://hub.docker.com/r/homeassistant/raspberrypi3-homeassistant
   homeassistant:
-    build: homeassistant
+    image: "homeassistant/raspberrypi3-homeassistant:stable"
     ports:
-      - 80:8123
+      - "80:8123"
     privileged: true
     volumes:
       - 'config:/config'
     restart: always
     devices:
       - "/dev:/dev"
-      - "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave"
-  mqtt:
-    image: arm32v6/eclipse-mosquitto@sha256:ec3e1dbb9e198ff04d62c2d0f6eff74cad7438c7d080b89a28428fb96c8479c4
-    ports:
-      - "1883:1883"
-    restart: always
+      
+  # https://hub.docker.com/r/causticlab/hass-configurator-docker
   hass-configurator:
     image: "causticlab/hass-configurator-docker:arm"
     restart: always
@@ -27,3 +29,13 @@ services:
       - 'config:/hass-config'
     environment:
       - HC_BASEPATH=/hass-config
+
+    # https://hub.docker.com/r/adguard/adguardhome
+  adguard:
+    image: "adguard/adguardhome:v0.105.2"
+    network_mode: host
+    privileged: true
+    volumes:
+      - 'adguardhome_work:/opt/adguardhome/work:rw'
+      - 'adguardhome_conf:/opt/adguardhome/conf:rw'
+    command: --host 0.0.0.0 --port 8000 --no-check-update --config /opt/adguardhome/conf/AdGuardHome.yaml

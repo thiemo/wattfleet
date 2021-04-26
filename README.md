@@ -1,9 +1,11 @@
-# Balena Home Assistant
-Home Assistant with balenaSense using MQTT
+# Balena Home Assistant + AdGuard Home
+Home Assistant and AdGuard Home in one device
 
-A full step-by-step tutorial is available here: [https://www.balena.io/blog/monitor-air-quality-around-your-home-with-home-assistant-and-balena/](https://www.balena.io/blog/monitor-air-quality-around-your-home-with-home-assistant-and-balena/)
+balenaCloud is a free service to remotely manage and update your IoT devices through an online dashboard interface, as well as providing remote access to the AdGuard Home and Home Assistant web interface without any additional configuation.
 
-[Home Assistant](https://www.home-assistant.io/) is a popular open source home automation system that is often run from low-cost devices like a Raspberry Pi. Here’s how to use balenaSense to push its sensor data to Home Assistant using MQTT.
+This project is a [balenaCloud](https://www.balena.io/cloud) stack with the following services:
+- [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) is a network-wide software for blocking ads & tracking.
+- [Home Assistant](https://www.home-assistant.io/) is a popular open source home automation system that is often run from low-cost devices like a Raspberry Pi. 
 
 ## Hardware required
 Here’s the list of items required for a basic setup:
@@ -11,7 +13,6 @@ Here’s the list of items required for a basic setup:
 * Raspberry Pi 3B or greater (A B+ or 4B works great, and less powerful Pis can be used albeit with lower performance)
 * 32GB (or larger) Micro-SD Card (we recommend Sandisk Extreme Pro SD cards)
 * Power supply and cable
-* Optional: For connecting wireless devices such as locks and light switches, a Z-Wave gateway such as the Aeotec Z-Stick Gen5
 
 ## Software required
 This repository contains all of the software and configuration you’ll need to get started. We’re going to deploy this project on balenaCloud using a free account to push the project and all the software to your Raspberry Pi as well as to provide remote access. Therefore, you’ll need:
@@ -31,33 +32,37 @@ We recommend this button as the de-facto method for deploying new apps on balena
 ## Configuring Home Assistant
 A text editor called Hass-Configurator is available locally on port 3218. Using this editor, you can make changes to the Home Assistant configuration file /hass-config/configuration.yaml which is the default folder for Hass-Configurator.
 
-You can enable MQTT in Home Assistant from the Configuration > Integrations menu or by adding the following lines to configuration.yaml:
-```
-mqtt:  
-  broker: mqtt
-```
-(note that there must be two spaces before the word broker.) Here we are telling Home Assistant to enable MQTT, and providing the hostname of our local MQTT broker container (you could also provide the IP address of the local container or the IP address of any other reachable broker you might want to use.) Any time you change the configuration, you should go back to Home Assistant and use its configuration checker to make sure your changes do not contain any errors. If there are no errors, restart Home Assistant for your changes to take effect.
+After configuration, you may also use [AdGuard Home integration in Home Assistant.](https://www.home-assistant.io/integrations/adguard/)
 
 ## Configuring HASS Configurator
 Environment varibles can be used to configure the configurator. For example, to add basic HTTP authentication, the `HC_USERNAME` and `HC_PASSWORD` variables can be specified. The password in plain text or via SHA256 by prepending the hash with `{sha256}`. For more information on configurator variables visit: https://github.com/danielperna84/hass-configurator/wiki/Configuration
 
 Note that to specify any of these configuration variables as an environment variable they should be prepended with `HC_`.
 
-## Integrate Home Assistant with balenaSense
-You can follow the [balenaSense tutorial](https://www.balena.io/blog/build-an-environment-and-air-quality-monitor-with-raspberry-pi/) to create a self-contained air quality monitoring device. Confirm that your balenaSense installation is up and running on the same network as this project.
+## Configuring AdGuard Home
 
-Add a device variable to your balenaSense device in the balenaCloud dashboard. In the “Add variable” popup, for “NAME” enter TELEGRAF_MQTT_URL_PORT and then paste the IP from your Home Assistant application into the “VALUE” box. Append :1883 after the address which is the port number. After clicking "Add" balenaSense will restart and begin publishing its sensor data to Home Assistant.
+### Initial setup
 
-Before we can actually see the sensors in Home Assistant, we need to add them to the configuration.yaml file. You can see the sensors we want to add by opening the file /hass-config/sense.yaml in the configuration editor. Copy the full contents of this file and paste into the bottom of the configuration.yaml file.
+<https://github.com/AdguardTeam/AdGuardHome/wiki/Getting-Started>
 
-Alternatively, you can run a script we prepared to do the copying for you. In the Hass-Configurator, click the gear icon in the upper right and select “Execute shell command.” In the popup box, type /hass-config/sensors.sh and click “Execute.” Almost immediately, you should see “Task completed!” at which point you can click “Close.” Remember to restart Home Assistant to see the changes.
+1. connect to `http://YOUR-DEVICE-IP:8000/install.html` in your browser
+2. select `All interfaces` and port `8000` for the Admin Web Interface listen interface (Do not use port 80 as it'll be used by HomeAssistant.)
+3. select either `eth0` or `wlan0` and port `53` for the DNS server listen interface
+4. provide an admin username and password
 
-To see a pre-formatted Lovelace version of the UI in Home Assistant, activate it by adding the following to configuration.yaml:
-```
-lovelace:  
-  mode: yaml
-```
-This change will cause Home Assistant to utilize the ui-lovelace.yaml file we have included.
+### Encryption setup
 
-### Get it going and let us know what you think
-Once you have the project up and running, experiment with different setups and configurations to suit your needs! As always, if you run into any problems or have any questions or suggestions, reach out to us on [the forums](https://forums.balena.io/), [Twitter](https://twitter.com/balena_io?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) or [Facebook](https://www.facebook.com/balenacloud/).
+<https://github.com/AdguardTeam/AdGuardHome/wiki/Encryption>
+
+Check out the `letsencrypt` branch on the following repo for instructions on using
+certbot to automatically generate and renew SSL certificates.
+
+<https://github.com/klutchell/balena-adguard/tree/letsencrypt>
+
+## Acknowledgments
+
+Original software is by AdGuard: <https://adguard.com/en/adguard-home/overview.html>
+
+This repo combines two other projects on GitHub:
+* [AdGuard Home on balena from klutchell](https://github.com/klutchell/balena-adguard)
+* [Home Assistant on balena from balenalabs](https://github.com/balenalabs-incubator/balena-homeassistant)
