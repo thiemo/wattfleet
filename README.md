@@ -45,8 +45,8 @@ Note that to specify any of these configuration variables as an environment vari
 
 <https://github.com/AdguardTeam/AdGuardHome/wiki/Getting-Started>
 
-1. connect to `http://YOUR-DEVICE-IP:80/install.html` in your browser
-2. select `All interfaces` and port `80` for the Admin Web Interface listen interface (Do not use port 80 as it'll be used by HomeAssistant.)
+1. connect to `http://YOUR-DEVICE-IP:8000/install.html` in your browser
+2. select `All interfaces` and port `8000` for the Admin Web Interface listen interface (Do not use port 80 as it'll be used by HomeAssistant.)
 3. select either `eth0` or `wlan0` and port `53` for the DNS server listen interface
 4. provide an admin username and password
 
