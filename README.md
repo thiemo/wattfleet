@@ -7,10 +7,6 @@ This project is a [balenaCloud](https://www.balena.io/cloud) stack with the foll
 - [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) is a network-wide software for blocking ads & tracking.
 - [Home Assistant](https://www.home-assistant.io/) is a popular open source home automation system that is often run from low-cost devices like a Raspberry Pi. 
 
-This repo combines two projects:
-* [AdGuard Home on balena from klutchell](https://github.com/klutchell/balena-adguard)
-* [Home Assistant on balena from balenalabs](https://github.com/balenalabs-incubator/balena-homeassistant)
-
 ## Hardware required
 Here’s the list of items required for a basic setup:
 
@@ -66,3 +62,7 @@ certbot to automatically generate and renew SSL certificates.
 ## Acknowledgments
 
 Original software is by AdGuard: <https://adguard.com/en/adguard-home/overview.html>
+
+This repo combines two other projects on GitHub:
+* [AdGuard Home on balena from klutchell](https://github.com/klutchell/balena-adguard)
+* [Home Assistant on balena from balenalabs](https://github.com/balenalabs-incubator/balena-homeassistant)
