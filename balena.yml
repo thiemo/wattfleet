@@ -1,15 +1,15 @@
-name: "Home Assistant"
-description: "Open source home automation that puts local control and privacy first; a Home Assistant, HASS Config, and MQTT stack."
+name: "Home Assistant + AdGuard Home"
+description: "A project to deploy Home Assistant and AdGuard Home on a single device"
 type: "sw.application"
 assets:
   repository:
     type: "blob.asset"
     data:
-      url: "https://github.com/balenalabs-incubator/balena-homeassistant"
+      url: "https://github.com/abdulisik/balena-homeassistant-adguard"
   logo:
     type: "blob.asset"
     data:
-      url: "https://raw.githubusercontent.com/balenalabs-incubator/balena-homeassistant/master/logo.png"
+      url: "https://raw.githubusercontent.com/abdulisik/balena-homeassistant-adguard/master/logo.png"
 data:  
   defaultDeviceType: "raspberrypi4-64"
   supportedDeviceTypes:
